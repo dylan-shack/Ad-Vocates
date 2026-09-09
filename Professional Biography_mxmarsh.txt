@@ -1,37 +1,78 @@
-# Professional Biography
-
-# Contact Information
-
-**Name:** Maximilian Marsh
-**Location:** Cincinnati, Ohio
-**Email:** marshmx@mail.uc.edu
-**Phone:** 513-484-6327
-**LinkedIn:** linkedin.com/in/max-marsh-1103a8268
-
-## Co-op Work Experience
-
-### Co-op - GMi Companies
-*Cincinnati, Ohio | August 2025 - December 2025*
-
-During my co-op at GMi Companies, I worked on Software Development projects involving Microsoft Dynamics NAV 2018 and database integration. My primary project involved developing a custom RFID order integration page that connected RFID data with sales order information.
-
-I designed and developed a custom table and page in Microsoft Dynamics NAV 2018 and implemented functionality that allowed users to enter one or multiple sales order numbers. The system dynamically populated the corresponding RFID and sales header information. I also developed a dropdown selection feature that allowed users to efficiently access sales orders within the database.
-
-Throughout my co-op, I gained experience in software development, database integration, testing, debugging, and technical documentation. I also contributed to production-level projects and worked both independently and as part of a team. This experience strengthened my problem-solving, communication, adaptability, and ability to learn new technologies quickly.
-
-### Other relevant Work Experience - Summer Project Assistant
-*Pilot Chemical Company, Cincinnati, Ohio | May 2024 - September 2024*
-
-As a Summer Project Assistant at Pilot, I worked on projects involving automation, data processing, and process improvement. I created backup files for a plant order and supply history and worked with utility billing processes using virtual machines and excel.
-
-As a Summer Project Assistant at Pilot Chemical, I worked on projects involving automation, data processing, and process improvement. I created backup files for plant order and supply history and worked with utility billing processes using virtual machines and Excel.
-
-This position provided experience with Python, Excel, Power BI, CHEMPAX, Q-Pulse, and Linux virtual machines. I also used AI tools to improve the efficiency of data collection and data storage processes.
-
-## Project Sought
-
-I am seeking a capstone project focused on software development and networking. I am particularly interested in developing a desktop application that functions as a DNS-based proxy and ad blocker
-
-The application could allow users to toggle ad blocking on or off, display the number of ads or network requests that have been blocked, and provide useful network statistics. I am interesting in developing a practical application that combines a user friendly interface with networking and software engineering concepts.
+Professional Biography
 
 
+Contact Information
+
+Name: Maximilian Marsh
+Email: marshmx@mail.uc.edu
+Location: Cincinnati, Ohio
+Phone: 513-484-6327
+LinkedIn: linkedin.com/in/max-marsh-1103a826
+
+Co-op Work Experience
+
+Software Development Co-op - GMi Companies
+Dates of Employment: August 2025 - December 2025
+
+During this experience, I:
+
+- Developed a custom RFID order integration page in Microsoft Dynamics NAV 2018
+- Designed and developed custom tables and pages within Dynamics NAV
+- Integrated RFID data with sales order information
+- Implemented functionality for entering and retrieving multiple sales orders
+- Developed dropdown functionality for efficiently accessing sales orders
+- Worked with databases and production-level software
+- Tested and debugged software to ensure functionality
+- Created and maintained technical documentation
+- Worked independently and as part of a development team
+
+Technical skills used
+
+- Microsoft Dynamics NAV 2018
+- Database integration
+- Software development
+- Testing and debugging
+- Technical documentation
+
+Non-Technical skills used
+
+- Communication
+- Problem-solving
+- Adaptability
+- Time management
+- Teamwork
+- Learning new technologies
+
+Summer Project Assistant - Pilot Chemical Company
+Dates of Employment: May 2024 - September 2024
+
+During this experience, I:
+
+- Worked on automation and process improvement projects
+- Created backup files for plant order and supply history
+- Assisted with utility billing processes
+- Processed and organized company data
+- Worked with virtual machines and Linux environments
+- Used AI tools to improve data collection and storage processes
+
+Technical skills used
+
+- Python
+- Excel
+- Power BI
+- CHEMPAX
+- Q-Pulse
+- Linux virtual machines
+- Data processing and automation
+
+Non-Technical skills used
+
+- Communication
+- Problem-solving
+- Process improvement
+- Time management
+- Adaptability
+
+Project Sought
+
+I am looking for a project involving software development and networking that solves a real-world problem. I am particularly interested in developing an advertisement-blocking application that can detect and block ads, trackers, and unwanted network requests while providing users with useful network statistics and diagnostics. I am interested in creating a practical application with a user-friendly interface that combines software engineering, networking, privacy, and data analysis.
