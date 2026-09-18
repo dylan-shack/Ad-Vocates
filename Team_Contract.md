@@ -210,8 +210,8 @@ By signing below, each team member confirms that they have reviewed this contrac
 
 | Team Member       | Signature                      | Date       |
 | ----------------- | ------------------------------ | ---------- |
-| Max Marsh         | Max Marsh                      | 9/18/2026 |
-| Dylan Shackleford | ______________________________ | __________ |
+| Max Marsh         | Max Marsh                      | 9/18/2026  |
+| Dylan Shackleford | Dylan Shackleford              | 9/18/2026  |
 
 ---
 
