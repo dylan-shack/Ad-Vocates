@@ -4,7 +4,7 @@
 
 **Goal:** Create a reliable and efficient tool that improves browsing performance while giving users greater privacy, security, and control over their web experience.
 
-**Conventions:** Solid boxes represent components built by the team, dashed boxes represent external dependencies the team does not build, arrows for the D0 diagram represent interfaces, arrows for the data-flow diagram represent data with its form labeled
+**Conventions:** Solid boxes represent components built by the team, circles represent external dependencies the team does not build, arrows for the D0 diagram represent interfaces, arrows for the data-flow diagram represent data with its form labeled
 
 **Basic input:** Browser request data, user protection settings and filter rules from approved sources
 
