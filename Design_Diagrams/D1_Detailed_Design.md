@@ -19,7 +19,7 @@ The D1 figures use the following conventions:
 - Arrows between system components represent the direction of communication or data flow.
 - Primary keys are marked with **PK**.
 - Foreign keys are marked with **FK**.
-- Relationship cardinality is shown using **1:1**, **1:M**, or **M:N** notation.
+- Relationship cardinality is shown using **1:1** notation.
 - Labels on arrows describe the type of data being passed between components.
 - Components already defined in D0 keep the same names in D1 so the two designs can be compared directly.
 ## 2. Data Model, the D1 Diagram
@@ -264,3 +264,49 @@ A set also helps prevent duplicate hostname entries.
 - Subdomains should be treated separately unless the team later decides to support parent-domain matching.
 - Invalid or empty hostnames should not be added to the allowlist.
 - If a hostname is removed from the allowlist, normal filtering should resume for that site.
+
+
+## 4. Build-versus-Reuse Decisions
+
+Ad-Vocates will use a combination of components developed by the team and existing browser technologies. Existing tools will be reused when they provide well-tested functionality that does not need to be recreated specifically for this project. The team will focus its development work on the filtering, settings, statistics, and user-control features that are specific to Ad-Vocates.
+
+| Component or Feature | Build or Reuse | Library, API, or Service | License | Reason |
+|---|---|---|---|---|
+| Request filtering logic | Build | Ad-Vocates filtering logic | Project code | The rules for deciding whether a request should be blocked are a core part of the project and need to work with our settings, allowlist, and statistics. |
+| Browser request handling | Reuse | Chromium Extension APIs | Chromium/browser platform APIs | Browser APIs already provide supported methods for interacting with browser requests. Reusing them is more reliable than attempting to build browser-level request handling ourselves. |
+| Filter lists | Reuse | Publicly available ad and tracker filter lists | Depends on selected filter list | Existing filter lists provide mature collections of known advertising and tracking rules. The specific list and its license will be verified before it is included in the project. |
+| Filter rule organization and matching | Build | Ad-Vocates filtering engine | Project code | The team needs control over how rules are loaded, organized, and checked so filtering performance can be measured and improved. |
+| Allowlist logic | Build | Ad-Vocates settings logic | Project code | Allowlisting is directly tied to the project's settings and filtering behavior and is simple enough to implement within the application. |
+| Local data storage | Reuse | Browser storage API / IndexedDB | Browser platform API | Browser storage is mature, local to the user's device, and avoids the need to build or host a separate database service. |
+| Settings management | Build | Ad-Vocates settings component | Project code | The settings behavior is specific to Ad-Vocates and needs to control protection status, filtering, and allowlist behavior. |
+| Dashboard interface | Build | HTML, CSS, and JavaScript/TypeScript | Project code | The dashboard is specific to the information and controls provided by Ad-Vocates and will be designed by the team. |
+| Basic URL and hostname parsing | Reuse | Browser URL API | Web platform API | URL parsing is standardized and already provided by the browser. Reusing it reduces errors and avoids creating custom URL parsing code. |
+| Sorting and basic collection operations | Reuse | Built-in JavaScript/TypeScript functionality | ECMAScript/Web platform | Standard language functions are mature and sufficient for basic collection operations, so there is no reason to implement custom sorting or collection utilities. |
+
+### Reuse Evaluation
+
+Libraries and services considered for Ad-Vocates will be checked for maturity, licensing, performance, and fit before they are added to the project.
+
+Browser-provided APIs are preferred when they already provide the required functionality because they are widely supported, maintained as part of the browser platform, and do not require additional hosting.
+
+For external filter lists, the team will verify the license and usage requirements of the specific list before including it in the final application. The team will also consider the size and performance impact of the list because filtering rules may be checked many times while websites are loading.
+
+Third-party libraries will only be added when they provide a clear advantage over built-in browser or JavaScript functionality.
+
+### Possible Filter Lists
+
+The team has not selected a final filter list yet. The following are possible options that could be evaluated for Ad-Vocates based on licensing, maturity, performance, and compatibility.
+
+- **EasyList**  
+  A widely used filter list focused mainly on blocking advertisements. It is commonly used by many ad-blocking projects and would be a strong candidate for the main advertising filter.
+
+- **EasyPrivacy**  
+  A companion list focused more on trackers, analytics, and other privacy-related requests. This could be used alongside an advertising-focused list.
+
+- **AdGuard Base Filter**  
+  A maintained filter list designed to block advertisements on English-language websites. AdGuard's filter repository is actively maintained and its filters are also used by other blocking software. 
+
+- **AdGuard Tracking Protection Filter**  
+  A filter focused on privacy-related tracking requests. This could be evaluated as an alternative to EasyPrivacy or as part of a combined filtering approach. 
+
+Before choosing a final list, we will compare the license, number of rules, update frequency, browser compatibility, and performance impact of each option. 
