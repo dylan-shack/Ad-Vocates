@@ -241,3 +241,4 @@ Any advisor-requested revisions will be incorporated before the contract is desi
 | --------- | ------ | -------------------------------------- |
 | Draft 0.1 | 9/06/2026 | Initial team-signed draft contract     |
 | 1.0       | 9/18/2026 | Advisor reviewed and approved contract |
+| 1.1       | 10/08/2026| Design Diagrams Created                |
