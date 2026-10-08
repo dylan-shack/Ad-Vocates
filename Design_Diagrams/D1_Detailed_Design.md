@@ -136,4 +136,131 @@ The allowlist and filter rules are represented as separate records instead of be
 
 `statsId` does not require an additional secondary index because only one current statistics summary is expected.
 
+
 If error records are retained, `loggedAt` may be indexed so recent errors can be retrieved in time order during debugging.
+
+
+## 3. Core Algorithms
+
+The two main algorithms for Ad-Vocates are request filtering and allowlist checking. These are important because if either one is too slow or does not work correctly, the blocker could miss unwanted requests or block something that should be allowed.
+
+### Algorithm 1: Request Filtering and Rule Matching
+
+#### What it does
+
+The request filtering algorithm decides whether a browser request should be blocked or allowed.
+
+When the browser tries to load a resource, Ad-Vocates checks the request against the active filtering rules. If a matching blocking rule is found, the request is blocked. If no rule matches, the request is allowed to continue.
+
+This algorithm supports **US-01**, which requires known advertising and tracking requests to be blocked.
+
+#### Inputs
+
+| Input | Type | Description |
+|---|---|---|
+| `requestUrl` | `string` | Full URL of the requested resource |
+| `pageHost` | `string` | Hostname of the page making the request |
+| `resourceType` | `string` | Type of resource being requested, such as script, image, or frame |
+| `enabled` | `boolean` | Whether Ad-Vocates protection is currently enabled |
+| `activeRules` | `FilterRule[]` | Collection of active filtering rules |
+
+Each `FilterRule` contains:
+
+`ruleId: string`  
+`ruleText: string`
+
+#### Output
+
+The algorithm returns:
+
+`decision: "ALLOW" | "BLOCK"`  
+`matchedRuleId: string | null`
+
+If the request is blocked, `matchedRuleId` identifies the rule that caused the block. If the request is allowed, `matchedRuleId` is `null`.
+
+#### Expected Complexity
+
+The active filter rules will be loaded into memory so that Local Storage does not need to be accessed for every request.
+
+For the first version of the project, the rules can be grouped by domain or another useful identifier so Ad-Vocates only checks rules that could apply to the current request.
+
+The expected lookup is approximately `O(1 + k)`, where `k` is the number of candidate rules that need to be checked for the requested domain.
+
+For example, if Ad-Vocates contains around **10,000 active rules**, only a small subset of those rules should normally be checked for one request.
+
+If the rule set increased by 100 times to around **1,000,000 rules**, checking every rule for every request would not be practical. The rules would need to stay indexed or grouped so the number of rules checked for one request stays relatively small.
+
+This matters because the filtering algorithm may run many times while a single webpage is loading.
+
+#### Why This Approach Was Chosen
+
+The team chose to load and organize filter rules in memory instead of reading every rule from Local Storage for every request.
+
+A simple linear scan through every active rule would be easier to implement, but it would take approximately `O(n)` time for every request, where `n` is the total number of filter rules. This would become slower as the filter list grows.
+
+Organizing the rules before request processing takes some extra setup, but it allows the Filter Request component to make faster decisions during normal browsing.
+
+#### Edge Cases
+
+- If no filtering rules are loaded, the request is allowed.
+- If protection is disabled, the request is allowed without checking the rules.
+- Duplicate rules should not cause the blocked request counter to increase more than once for the same request.
+- If multiple rules match, the request is still only blocked once.
+- If a rule cannot be processed, it should be skipped instead of stopping the entire filtering process.
+- If the request URL cannot be parsed, Ad-Vocates should not crash.
+- If no rule matches, the request is allowed.
+
+---
+
+### Algorithm 2: Allowlist Checking
+
+#### What it does
+
+Before normal filtering is applied, Ad-Vocates checks whether the current website has been added to the allowlist.
+
+If the website is allowlisted, normal blocking rules are skipped for that site. If the website is not allowlisted, request filtering continues normally.
+
+This algorithm supports **US-03** and **US-05**, because users need a way to trust a website or recover if blocking causes an important website feature to stop working.
+
+#### Inputs
+
+| Input | Type | Description |
+|---|---|---|
+| `pageHost` | `string` | Hostname of the website currently being visited |
+| `allowlist` | `Set<string>` | Set of normalized hostnames that the user has allowed |
+
+#### Output
+
+The algorithm returns:
+
+`isAllowlisted: boolean`
+
+If the value is `true`, normal filtering should be skipped for the website.
+
+If the value is `false`, Ad-Vocates continues with the normal filtering process.
+
+#### Expected Complexity
+
+The allowlist will be stored in a set-like structure so checking whether a hostname exists has an expected complexity of `O(1)`.
+
+For a normal installation, the allowlist is expected to contain fewer than around **100 websites**.
+
+Even if the allowlist grew by 100 times to around **10,000 websites**, an average `O(1)` lookup should still have very little effect on browsing performance.
+
+#### Why This Approach Was Chosen
+
+A set or hash-based lookup was chosen because the system only needs to determine whether a hostname is currently allowlisted.
+
+An alternative would be storing the allowlist as an array and checking each hostname one at a time. That would require an `O(n)` search and would become less efficient as the allowlist grows.
+
+A set also helps prevent duplicate hostname entries.
+
+#### Edge Cases
+
+- If the allowlist is empty, the hostname is treated as not allowlisted.
+- Duplicate hostnames should not be stored.
+- Hostnames should be converted to lowercase before comparison.
+- Hostnames should be normalized before lookup.
+- Subdomains should be treated separately unless the team later decides to support parent-domain matching.
+- Invalid or empty hostnames should not be added to the allowlist.
+- If a hostname is removed from the allowlist, normal filtering should resume for that site.
