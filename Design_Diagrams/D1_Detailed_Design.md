@@ -310,3 +310,216 @@ The team has not selected a final filter list yet. The following are possible op
   A filter focused on privacy-related tracking requests. This could be evaluated as an alternative to EasyPrivacy or as part of a combined filtering approach. 
 
 Before choosing a final list, we will compare the license, number of rules, update frequency, browser compatibility, and performance impact of each option. 
+
+
+## 5. API Contract
+
+Ad-Vocates will mainly use internal methods and browser-extension messaging instead of a traditional web API. These methods define how the Settings, Filter Request, Local Storage, and related components exchange data.
+
+### Method 1: evaluateRequest
+
+Determines whether a browser request should be allowed or blocked.
+
+| Field | Type | Required | Valid Range / Description |
+|---|---|---|---|
+| `requestUrl` | string | Yes | Valid HTTP or HTTPS URL |
+| `pageHost` | string | Yes | Valid normalized hostname |
+| `resourceType` | string | Yes | Browser resource type such as image, script, frame, or stylesheet |
+| `requestId` | string | Yes | Unique request identifier |
+
+#### Output
+
+```text
+{
+  decision: "ALLOW" | "BLOCK",
+  matchedRuleId: string | null
+}
+```
+
+`decision` indicates whether the request should continue.
+
+`matchedRuleId` contains the matching filter rule identifier if the request is blocked. Otherwise, it is `null`.
+
+#### Errors
+
+| Error Code | When It Happens |
+|---|---|
+| `INVALID_URL` | The request URL cannot be parsed |
+| `FILTERS_UNAVAILABLE` | No valid filter data is currently available |
+| `INTERNAL_ERROR` | An unexpected filtering error occurs |
+
+---
+
+### Method 2: isAllowlisted
+
+Checks whether the current website is included in the user's allowlist.
+
+| Field | Type | Required | Valid Range / Description |
+|---|---|---|---|
+| `hostname` | string | Yes | Valid normalized website hostname |
+
+#### Output
+
+```text
+{
+  isAllowlisted: boolean
+}
+```
+
+#### Errors
+
+| Error Code | When It Happens |
+|---|---|
+| `INVALID_HOSTNAME` | The hostname is empty or invalid |
+| `STORAGE_ERROR` | The allowlist cannot be read from local storage |
+
+---
+
+### Method 3: updateSettings
+
+Updates the main protection settings for Ad-Vocates.
+
+| Field | Type | Required | Valid Range / Description |
+|---|---|---|---|
+| `enabled` | boolean | Yes | `true` or `false` |
+| `allowlist` | string[] | No | List of valid normalized hostnames |
+
+#### Output
+
+```text
+{
+  success: boolean,
+  updatedCount: integer
+}
+```
+
+`updatedCount` represents the number of stored setting values or allowlist entries changed.
+
+#### Errors
+
+| Error Code | When It Happens |
+|---|---|
+| `INVALID_SETTING` | A provided value is outside the accepted type or range |
+| `INVALID_HOSTNAME` | One of the supplied allowlist entries is invalid |
+| `STORAGE_ERROR` | The updated settings cannot be saved |
+
+---
+
+### Method 4: getStatistics
+
+Returns the current blocking statistics stored by Ad-Vocates.
+
+#### Inputs
+
+No parameters are required.
+
+#### Output
+
+```text
+{
+  blockedTotal: integer,
+  estimatedBytes: integer
+}
+```
+
+`blockedTotal` is the number of requests blocked.
+
+`estimatedBytes` is the estimated number of bytes prevented from loading.
+
+#### Errors
+
+| Error Code | When It Happens |
+|---|---|
+| `STORAGE_ERROR` | Statistics cannot be read from local storage |
+
+---
+
+### Method 5: refreshFilters
+
+Requests a new version of the selected external filter list and updates the active rules if the new data is valid.
+
+#### Inputs
+
+No user-supplied parameters are required.
+
+#### Output
+
+```text
+{
+  success: boolean,
+  ruleCount: integer,
+  updatedAt: string
+}
+```
+
+`ruleCount` is the number of valid filter rules loaded.
+
+`updatedAt` is an ISO 8601 timestamp showing when the filter data was last updated.
+
+#### Errors
+
+| Error Code | When It Happens |
+|---|---|
+| `NETWORK_ERROR` | The filter list cannot be downloaded |
+| `INVALID_FILTER_DATA` | The downloaded filter data cannot be validated |
+| `STORAGE_ERROR` | The validated filter rules cannot be saved |
+
+---
+
+### Example Request and Response
+
+Example request sent to the Filter Request component:
+
+```json
+{
+  "method": "evaluateRequest",
+  "requestUrl": "https://example-ad-domain.com/banner.js",
+  "pageHost": "example.com",
+  "resourceType": "script",
+  "requestId": "req-1042"
+}
+```
+
+Example response:
+
+```json
+{
+  "decision": "BLOCK",
+  "matchedRuleId": "rule-125"
+}
+```
+
+### Versioning
+
+Internal Ad-Vocates component interfaces will use a version number such as `v1`. A breaking change is any change that removes a field, changes a field's type or meaning, changes a method name, or requires an existing caller to change how it sends or receives data. Breaking changes will require a new interface version.
+
+---
+
+## 6. Technology Choices with Justification
+
+Several technology choices are still being finalized. For the major parts of the system, we are currently considering two realistic options instead of committing to technologies before development and testing begin.
+
+### Programming Language
+
+The two main options are **JavaScript** and **TypeScript**. Both work directly with modern browser extension APIs and have strong community support. JavaScript would have the lowest setup complexity and would be easier to begin developing with immediately. TypeScript would add static type checking, which could help catch mistakes in filter rules, settings objects, and internal API messages before runtime. Both are free and open technologies and should provide enough performance for the planned request filtering logic. Neither requires paid hosting because the extension will initially run locally in the user's browser. The final choice will depend mainly on which language allows the team to develop and debug the extension most effectively.
+
+### Browser Platform
+
+The project can either target **Chrome and other Chromium-based browsers first** or use the broader **WebExtensions approach** with the goal of supporting both Chromium and Firefox. Chromium-first development would reduce the number of browser differences the team has to test during the first version and provides access to the current Chrome extension APIs. A broader WebExtensions approach would make the application available to more users but would require additional compatibility testing. Both options have large developer communities, mature documentation, and no direct licensing or hosting cost. For the first working version, Chromium is likely to require less development effort, while broader browser support can be considered after the main features are stable.
+
+### Front End
+
+The dashboard can be built using **plain HTML, CSS, and JavaScript/TypeScript** or with a framework such as **React**. Plain HTML and CSS would keep the extension small and reduce the number of third-party dependencies. React provides reusable components and may make a larger interface easier to manage, but it adds additional build tools and dependencies. Both approaches have strong community support and are available without licensing cost. Since the Ad-Vocates dashboard is expected to be relatively small, plain HTML and CSS may provide better simplicity and performance, while React remains an option if the dashboard becomes more complex.
+
+### Local Data Storage
+
+The two main storage options are the browser's **extension storage API** and **IndexedDB**. The extension storage API is simpler and works well for small settings such as whether protection is enabled and which websites are allowlisted. IndexedDB is better suited for larger amounts of structured data such as large filter lists or more detailed statistics. Both are built into modern browsers, have mature documentation, require no additional license, and do not create hosting costs. The final design may use the extension storage API for small settings while using IndexedDB if the selected filter list is too large for simple key-value storage.
+
+### Filter List
+
+Ad-Vocates will reuse an **existing maintained filter list** rather than attempting to create a complete advertising and tracker list from scratch. The exact list has not yet been selected. The team will compare at least two candidates based on license compatibility, update frequency, maturity, list size, coverage, and performance. Reusing an established list allows the team to focus development time on the filtering engine, allowlist behavior, statistics, and user controls. Before a filter list is included in a downloadable release, its license will be checked to make sure redistribution is allowed.
+
+### Hosting and Distribution
+
+The first version of Ad-Vocates is planned as a **local browser extension without a required cloud backend**. One option is to distribute development releases through GitHub, while another option is eventual distribution through a browser extension store such as the Chrome Web Store. Keeping filtering and user settings local reduces hosting cost and avoids requiring a remote server to store browsing-related information. GitHub provides a simple way to distribute source code and development releases, while an extension store would make installation and updates easier for general users. A hosted backend could be added later if a future feature requires centralized services, but it is not necessary for the current design.
+
