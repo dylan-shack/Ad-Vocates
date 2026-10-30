@@ -91,7 +91,7 @@ The Week 4 user stories remain the source stories for the requirements below:
 |---|---|---|---|---|
 | **NFR-01** | The system shall complete the request-filtering decision within **50 ms for at least 95% of 1,000 synthetic requests** while approximately **10,000 active rules** are loaded on the team's baseline development computer. | Should | US-01 | Timed performance test with 1,000 requests and approximately 10,000 rules. |
 | **NFR-02** | The system shall protect locally stored browsing-related data by using **HTTPS for 100% of configured remote filter sources**, rejecting filter data that fails validation, and transmitting **zero user browsing-history or request-URL records to non-filter-source remote services** during network inspection tests. | Must | US-01, US-04 | Configuration review, validation tests, and network inspection. |
-| **NFR-03** | At least **4 of 5 test users** shall be able to complete each of these tasks without assistance in **2 minutes or less per task**: toggle protection, add/remove an allowlist entry, and locate the blocking statistics. | Should | US-02, US-03, US-05 | Moderated usability test with five participants and timed task completion. |
+| **NFR-03** | At least **4 of 5 test users** shall be able to complete each of these tasks without assistance in **2 minutes or less per task**( This will most likely decrease as the progrma gets better): toggle protection, add/remove an allowlist entry, and locate the blocking statistics. | Should | US-02, US-03, US-05 | Moderated usability test with five participants and timed task completion. |
 | **NFR-04** | The system shall complete **1,000 sequential request evaluations without crashing**, retain the previous valid filter set in **10 of 10 simulated update failures**, and preserve saved settings in **10 of 10 restart tests**. | Must | US-04, US-05 | Reliability stress test, failure-injection test, and restart persistence test. |
 
 ## 7. MoSCoW Summary
@@ -123,7 +123,6 @@ The Week 4 user stories remain the source stories for the requirements below:
 
 - Cloud user accounts or cloud synchronization of settings or browsing data.
 - A mobile-native Ad-Vocates application.
-- Network-wide router or DNS-level advertisement blocking.
 - A full user-authored filter-rule editor.
 - Guaranteed Firefox, Safari, or other non-Chromium browser support in the first release; compatibility may be investigated, but it is not required for the MVP.
 - AI-based classification of advertisements or trackers.
@@ -145,7 +144,7 @@ These constraints are inherited from the team's Week 3 `Constraints_Essay.md` an
 | ID | Assumption | Owner | Review Date |
 |---|---|---|---|
 | **ASM-01** | The initial implementation will run as a local browser extension and will not require a hosted backend. | Max Marsh | 2026-11-06 |
-| **ASM-02** | The first implementation will target Chromium-based browsers before any broader browser-support commitment is made. | Dylan Shackleford | 2026-11-06 |
+| **ASM-02** | The first implementation will target Chromium-based browsers before any broader browser-support commitment is made. | Max Marsh| 2026-11-06 |
 | **ASM-03** | Normal installations will use approximately 10,000 active filter rules and fewer than approximately 100 allowlisted hostnames for initial performance planning. | Dylan Shackleford | 2026-11-13 |
 
 ### Open Questions
