@@ -2,7 +2,7 @@
 
 **Project:** Ad-Vocates  
 **Team Members:** Max Marsh, Dylan Shackleford  
-**Document Version:** 1.2 
+**Document Version:** 1.3
 **Date:** October 30, 2026
 
 ## 1. Version and Change Log
