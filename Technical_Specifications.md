@@ -185,16 +185,9 @@ The planned Week 10 test IDs are included below so each requirement, non-functio
 | CON-02 | Ethical transparency for settings and estimated data. | D0 Dashboard + Settings + Statistic Recorder; D1 statistics fields; D2 UI/status behavior | Designed | TC-016 |
 | CON-03 | Website-usability recovery constraint. | D0 Settings + Filter Request; D1 allowlist algorithm; D2 breakage recovery cases | Designed | TC-017 |
 
-## 7. Implementation Ownership Connection
 
-The Week 8 `Tasklist.md` assigns implementation ownership that matches this specification:
 
-- **Dylan Shackleford:** T1 browser/filter compatibility, T3 Filter Validator, T5 Filter Updater, T7 Statistic Recorder, and T9 integration testing.
-- **Max Marsh:** T2 Local Storage, T4 Settings, T6 Filter Request, T8 Dashboard, and T10 Dashboard/Settings refinement and user documentation.
-
-These owners do not change requirement ownership; they identify the primary implementation responsibility for the components that satisfy the traced requirements.
-
-## 8. Advisor Review Record
+## 7. Advisor Review Record
 
 The Ad-Vocates project and team contract were reviewed by the faculty advisor on **September 18, 2026**. The review covered the proposed privacy-focused ad-blocking scope, team responsibilities, and the planned direction of the project. The advisor approved the project and team contract. The team retained the original browser-extension scope rather than expanding the project into additional research-focused features.
 
@@ -202,9 +195,8 @@ The Ad-Vocates project and team contract were reviewed by the faculty advisor on
 |---|---|---|
 | **September 18, 2026** | Ad-Vocates project scope, team contract, team responsibilities, and overall implementation direction. | Project and team contract approved. The project remained focused on the original privacy-focused browser extension scope. |
 
-The Requirements Document and this Technical Specification preserve that approved scope while consolidating the later D0, D1, D2, user-story, constraint, and planning work into formal project documentation.
 
-## 9. Repository References
+## 8. Repository References
 
 - [Requirements Document](https://github.com/dylan-shack/Ad-Vocates/blob/main/Requirements_Document.md)
 - [Project Description](https://github.com/dylan-shack/Ad-Vocates/blob/main/Project-Description.md)
