@@ -160,4 +160,6 @@ There have been no project expenses or donated items to date. No future expenses
 
 ### Individual Effort
 
+- [Dylan Shackleford's Design Notebook](notebooks/shackleford_notebook.md) — 47 estimated hours through Week 13.
+- [Commit History](https://github.com/dylan-shack/Ad-Vocates/commits/main/)
 
