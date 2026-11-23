@@ -4,7 +4,7 @@
 **Team Members:** Max Marsh, Dylan Shackleford  
 **Document Version:** 1.3  
 **Date:** October 30, 2026  
-**Requirements Baseline:** `Requirements_Document.md` **Version 1.0, October 30, 2026**
+**Requirements Baseline:** `Requirements_Document.md` **Version 1.3, October 30, 2026**
 
 ## 1. Version and Change Log
 
@@ -13,7 +13,7 @@
 | 0.1 | 2026-10-30 | Consolidated D0 architecture, D1 data model/API contract, D2 edge-case design, project constraints, and Week 8 implementation ownership into one technical specification draft. | Max Marsh, Dylan Shackleford |
 | 1.0 | 2026-10-30 | Added component boundaries, data formats, stack decisions, constraint consequences, and full traceability to Requirements Document v1.0. | Max Marsh, Dylan Shackleford |
 
-This specification traces to **Requirements Document v1.0**. If a requirement changes, the requirements document version must be updated first and the traceability matrix in this document must then be revised.
+This specification traces to **Requirements Document v1.3**. If a requirement changes, the requirements document version must be updated first and the traceability matrix in this document must then be revised.
 
 ## 2. Architecture Summary
 
@@ -198,7 +198,7 @@ The Ad-Vocates project and team contract were reviewed by the faculty advisor on
 
 ## 8. Repository References
 
-- [Requirements Document](https://github.com/dylan-shack/Ad-Vocates/blob/main/Requirements_Document.md)
+- [Requirements Document](Requirements_Document.md)
 - [Project Description](https://github.com/dylan-shack/Ad-Vocates/blob/main/Project-Description.md)
 - [User Stories](https://github.com/dylan-shack/Ad-Vocates/blob/main/User_Stories.md)
 - [D0 High-Level Design](https://github.com/dylan-shack/Ad-Vocates/blob/main/Design_Diagrams/D0_High_Level_Design.md)
