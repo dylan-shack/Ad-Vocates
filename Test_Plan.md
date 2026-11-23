@@ -12,8 +12,9 @@ We will test the Chromium extension in spring 2027\. Dylan will lead testing. Bo
 | REQ-03, REQ-10, NFR-04 | Max: Settings and Local Storage. Test allowlist changes, failed saves and restarts. Dylan tests failed updates. |
 | REQ-05, REQ-06, NFR-03 | Dylan: Statistic Recorder. Max: Dashboard. Check the displayed totals and test whether users can find them and change settings. |
 | REQ-07, REQ-08, NFR-02 | Dylan: Filter Updater and Filter Validator. Test approved sources, invalid downloads and what data leaves the extension. |
+| REQ-09 | Max: Dashboard. Dylan: Filter Updater. Check the displayed status after successful and failed updates. |
 
-REQ-09, the Dashboard update-status display is deferred since it is optional. General pop-up handling is also deferred until its behavior is defined.
+REQ-09 is covered by the update-status test. General pop-up handling is deferred until its behavior is defined.
 
 # **2\. Verification and validation strategy**
 
@@ -24,7 +25,7 @@ Five users will test NFR-03. We will ask each person to change protection, allow
 | Layer | Approx. count | Coverage focus |
 | :---- | :---- | :---- |
 | Unit | 10 | Rule matching, invalid entries, duplicate events and timing. |
-| Integration | 8 | Settings, storage, filter updates and statistics. |
+| Integration | 9 | Settings, storage, filter updates and statistics. |
 | System | 4 | Browser behavior, network traffic and restarts. |
 | Acceptance | 3 | Protection, site recovery and statistics with five users. |
 
@@ -44,6 +45,7 @@ Five users will test NFR-03. We will ask each person to change protection, allow
 | Privacy | All sources use HTTPS. Zero invalid lists activated. Zero browsing records sent to unrelated services. | Inspect source settings, active rules and outgoing extension traffic. | NFR-02 |
 | Usability | At least 4 of 5 users complete each task unaided in 2 minutes or less. | Time each task separately for each user. | NFR-03 |
 | Reliability | Zero crashes in 1,000 requests. Rules survive 10 of 10 failed updates. Settings survive 10 of 10 restarts. | Count finished requests and compare saved values after each trial. | NFR-04 |
+| Update status | The Dashboard shows the latest refresh outcome and a readable message when a refresh fails. | Check the display after a successful refresh, a failed download, and a successful retry. | REQ-09 |
 
 # **4\. Test cases**
 
@@ -76,6 +78,7 @@ Start each case with the setup in section 5\.
 | TC-013 | Change protection (REQ-04, NFR-03) | 1\. Ask each of five users to turn protection off and back on. 2\. Time the task without hints. Then request a script from a blocked host | At least 4 of 5 finish in 120 seconds or less. The request is blocked after protection is turned back on. | Not Run |
 | TC-017 | Restore a broken site (REQ-02, REQ-03, NFR-03, CON-03) | 1\. Ask each user to allow page.test, reload it and click its button. Test the same script on sub.page.test.2\. Have the user remove the exception and reload. Time the user’s actions without hints. | The button works only on the allowed host and stops working after removal. At least 4 of 5 finish unaided in 120 seconds or less. | Not Run |
 | TC-016 | Find the totals (REQ-06, NFR-03, CON-02) | 1\. Set 20 blocks and 300 estimated bytes. Send a new block with no byte estimate.2\. Ask each user to find the count and savings. Time each user without hints. | The Dashboard shows 21 blocks and 300 bytes labeled estimated. At least 4 of 5 find both values in 120 seconds or less. | Not Run |
+| TC-009 | Display update status (REQ-09) | 1. Complete a successful filter refresh and check the Dashboard status. 2. Cause the next download to fail and check the status. 3. Restore the source and complete another successful refresh. | The Dashboard shows the successful update, displays a readable failure message after the failed download, and shows success after the retry. | Not Run |
 
 # **5\. Test environment**
 
@@ -105,7 +108,7 @@ bytes. Record the active filter metadata before restarting.
 
 Mark a case Pass if every expected result is met. Mark it Fail if any result or threshold is missed. Use Blocked when something prevents the test from running and Not Run before the first attempt.
 
-The plan passes when all 25 cases pass and the advisor review is complete. Each of the three user tasks must meet the 4-of-5 target on its own. A failed, blocked or unrun case keeps the plan from passing.
+The plan passes when all 26 cases pass and the advisor review is complete. Each of the three user tasks must meet the 4-of-5 target on its own. A failed, blocked or unrun case keeps the plan from passing.
 
 # **7\. Test schedule**
 
@@ -129,7 +132,7 @@ The plan passes when all 25 cases pass and the advisor review is complete. Each 
 
 ## **Project checklist**
 
-\[ \] All 25 cases pass and the results are recorded.
+\[ \] All 26 cases pass and the results are recorded.
 
 \[ \] The installation steps, test plan and traceability matrix are up to date.
 
