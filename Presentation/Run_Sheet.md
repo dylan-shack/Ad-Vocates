@@ -49,5 +49,5 @@
 | End-of-term accomplishments — Slide 7 | 1:00 | 1:30 |
 | Division of work — Slide 8 | 0:55 | 1:03 |
 | Expo demo — Slide 9 | 1:10 | 1:25 |
-| Total | 8:00 | [enter time] |
+| Total | 8:00 | 10:46 |
 
